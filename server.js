@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 // Require models
-var db = require("./models/article.js");
+// var db = require("./models");
 
 //Require handlebars
 var exphbs = require("express-handlebars");
@@ -28,6 +28,11 @@ dbconnect.on("error", console.error.bind(console, "connection error:"));
 dbconnect.once("open", function() {
   console.log("connected to mongoose");
 });
+
+// require routes
+var routes = require("./controller/controller");
+app.use(routes);
+app.use("/", routes);
 
 //Define port and start Server
 var port = process.env.PORT || 3000;
