@@ -6,7 +6,7 @@ var axios = require("axios");
 var cheerio = require("cheerio");
 
 // Import the model (article.js) to use its database functions
-var db = require("../models/article");
+var db = require("../models/");
 
 // Routes
 
@@ -29,44 +29,39 @@ router.get("/scrape", function(req, res) {
       result.title = $(this)
         .children("a")
         .text();
-      console.log(result.title);
+      console.log(`title: ${result.title}`);
       result.link = $(this)
         .children("a")
         .attr("href");
-      console.log(result.link);
+      console.log(`link: ${result.link} + \n\n`);
+
+      db.Article.create(result)
+        .then(function(dbArticle) {
+          // View the added result in the console
+          console.log(`+++++++++${dbArticle}`);
+        })
+        .catch(function(err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
     });
   });
+  res.send("scrape complete");
 });
-// Create a new Article using the `result` object built from scraping
-//       db.Article.create(result)
-//         .then(function(dbArticle) {
-//           // View the added result in the console
-//           console.log(dbArticle);
-//         })
-//         .catch(function(err) {
-//           // If an error occurred, log it
-//           console.log(err);
-//         });
-//     });
 
-//     // Send a message to the client
-//     res.send("Scrape Complete");
-//   });
-// });
-
-// // Route for getting all Articles from the db
-// router.get("/articles", function(req, res) {
-//   // Grab every document in the Articles collection
-//   db.Article.find({})
-//     .then(function(dbArticle) {
-//       // If we were able to successfully find Articles, send them back to the client
-//       res.json(dbArticle);
-//     })
-//     .catch(function(err) {
-//       // If an error occurred, send it to the client
-//       res.json(err);
-//     });
-// });
+// Route for getting all Articles from the db
+router.get("/articles", function(req, res) {
+  // Grab every document in the Articles collection
+  db.Article.find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      res.json(dbArticle);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
 
 // // Route for grabbing a specific Article by id, populate it with it's note
 // router.get("/articles/:id", function(req, res) {
