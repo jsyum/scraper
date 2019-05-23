@@ -22,7 +22,17 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Connect to Mongo DB
-mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
+
+// If deployed, use the deployed database. Otherwise use the local mongoHeadlines database
+var MONGODB_URI =
+  process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
+
+// Created mongolab-shallow-15244 as MONGODB_URI
+//Use heroku addons:docs mongolab to view documentation
+
+// mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 var dbconnect = mongoose.connection;
 dbconnect.on("error", console.error.bind(console, "connection error:"));
 dbconnect.once("open", function() {
