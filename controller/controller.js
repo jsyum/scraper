@@ -12,7 +12,7 @@ var db = require("../models/");
 
 //GET route for main display page
 router.get("/", function(req, res) {
-  res.render("index");
+  res.redirect("/articles");
 });
 
 // A GET route for scraping the echoJS website
