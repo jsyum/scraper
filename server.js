@@ -29,9 +29,6 @@ var MONGODB_URI =
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
-// Created mongolab-shallow-15244 as MONGODB_URI
-//Use heroku addons:docs mongolab to view documentation
-
 // mongoose.connect("mongodb://localhost/scraper", { useNewUrlParser: true });
 var dbconnect = mongoose.connection;
 dbconnect.on("error", console.error.bind(console, "connection error:"));
